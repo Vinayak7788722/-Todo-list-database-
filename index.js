@@ -1,24 +1,19 @@
 const express = require("express");
 const methodOverride = require("method-override");
-const mongoose = require("mongoose");
-require("dotenv").config();
-
 const app = express();
+const mongoose = require("mongoose");
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(methodOverride("_method"));
 
-// ✅ MongoDB Atlas connection
-const mongoURI = process.env.MONGO_URL;
-console.log("🔗 Connecting to:", mongoURI); // Debug log
+// MongoDB Connection
+mongoose.connect("mongodb+srv://vinayaknaik577:zOnTlJCwDV2r8Qwy@to-do-list1.kcczmms.mongodb.net/?retryWrites=true&w=majority&appName=to-do-list1")
+.then(() => console.log("✅ Connected to MongoDB Atlas"))
+.catch(err => console.error("❌ Connection error:", err));
 
-mongoose.connect(mongoURI);
-.then(() => console.log("✅ MongoDB Connected"))
-.catch(err => console.error("❌ MongoDB Error:", err));
-
-// ✅ Schema & Model
+// Schema & Model
 const trySchema = new mongoose.Schema({
   name: String,
   done: { type: Boolean, default: false },
@@ -31,8 +26,8 @@ const trySchema = new mongoose.Schema({
 
 const Item = mongoose.model("task", trySchema);
 
-// ✅ GET: Home Page
-app.get("/", async (req, res) => {
+// GET Home Route
+app.get("/", async function (req, res) {
   try {
     const foundItems = await Item.find({}).sort({ _id: -1 });
     const msg = req.query.msg || null;
@@ -43,8 +38,8 @@ app.get("/", async (req, res) => {
   }
 });
 
-// ✅ POST: Add Task
-app.post("/", async (req, res) => {
+// POST Add Task
+app.post("/", async function (req, res) {
   const taskName = req.body.ele1.trim();
   const priority = req.body.priority;
 
@@ -52,13 +47,13 @@ app.post("/", async (req, res) => {
     return res.redirect("/?msg=Task+title+cannot+be+empty");
   }
 
-  const newTask = new Item({ name: taskName, priority });
+  const newTask = new Item({ name: taskName, priority: priority });
   await newTask.save();
   res.redirect("/?msg=Task+added+successfully");
 });
 
-// ✅ PUT: Edit Task
-app.put("/edit/:id", async (req, res) => {
+// PUT Edit Task
+app.put("/edit/:id", async function (req, res) {
   try {
     const updatedData = {
       name: req.body.newText,
@@ -72,8 +67,8 @@ app.put("/edit/:id", async (req, res) => {
   }
 });
 
-// ✅ DELETE: Remove Task
-app.delete("/delete/:id", async (req, res) => {
+// DELETE Task
+app.delete("/delete/:id", async function (req, res) {
   try {
     await Item.findByIdAndDelete(req.params.id);
     res.redirect("/?msg=Task+deleted+successfully");
@@ -83,8 +78,8 @@ app.delete("/delete/:id", async (req, res) => {
   }
 });
 
-// ✅ POST: Toggle Checkbox
-app.post("/toggle/:id", async (req, res) => {
+// TOGGLE Checkbox
+app.post("/toggle/:id", async function (req, res) {
   try {
     const item = await Item.findById(req.params.id);
     item.done = !item.done;
@@ -96,8 +91,7 @@ app.post("/toggle/:id", async (req, res) => {
   }
 });
 
-// ✅ Start Server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server is running on port ${PORT}`);
+// Start Server
+app.listen(3000, function () {
+  console.log("Server is running on port 3000");
 });
