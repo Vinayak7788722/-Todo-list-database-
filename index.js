@@ -1,22 +1,26 @@
 const express = require("express");
 const methodOverride = require("method-override");
 const app = express();
-require("dotenv").config();
-const mongoose = require("mongoose");
+
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(methodOverride("_method"));
 
+require("dotenv").config();
+const mongoose = require("mongoose");
 
+const mongoURI = process.env.MONGO_URL;
+console.log("Connecting to:", mongoURI); // TEMP LOG for debugging
 
-mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect(mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
-.then(() => console.log("✅ Connected to MongoDB Atlas"))
-.catch((err) => console.error("❌ MongoDB connection error:", err));
+.then(() => console.log("MongoDB Connected"))
+.catch(err => console.error("MongoDB Error:", err));
+
 
 // Schema & Model
 const trySchema = new mongoose.Schema({
