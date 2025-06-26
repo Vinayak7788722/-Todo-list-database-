@@ -14,10 +14,7 @@ app.use(methodOverride("_method"));
 const mongoURI = process.env.MONGO_URL;
 console.log("🔗 Connecting to:", mongoURI); // Debug log
 
-mongoose.connect(mongoURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+mongoose.connect(mongoURI);
 .then(() => console.log("✅ MongoDB Connected"))
 .catch(err => console.error("❌ MongoDB Error:", err));
 
