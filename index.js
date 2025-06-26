@@ -1,28 +1,27 @@
 const express = require("express");
 const methodOverride = require("method-override");
-const app = express();
+const mongoose = require("mongoose");
+require("dotenv").config();
 
+const app = express();
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(methodOverride("_method"));
 
-require("dotenv").config();
-const mongoose = require("mongoose");
-
+// ✅ MongoDB Atlas connection
 const mongoURI = process.env.MONGO_URL;
-console.log("Connecting to:", mongoURI); // TEMP LOG for debugging
+console.log("🔗 Connecting to:", mongoURI); // Debug log
 
-mongoose.connect("mongoURL", {
+mongoose.connect(mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
-.then(() => console.log("MongoDB Connected"))
-.catch(err => console.error("MongoDB Error:", err));
+.then(() => console.log("✅ MongoDB Connected"))
+.catch(err => console.error("❌ MongoDB Error:", err));
 
-
-// Schema & Model
+// ✅ Schema & Model
 const trySchema = new mongoose.Schema({
   name: String,
   done: { type: Boolean, default: false },
@@ -35,8 +34,8 @@ const trySchema = new mongoose.Schema({
 
 const Item = mongoose.model("task", trySchema);
 
-// GET Home Route
-app.get("/", async function (req, res) {
+// ✅ GET: Home Page
+app.get("/", async (req, res) => {
   try {
     const foundItems = await Item.find({}).sort({ _id: -1 });
     const msg = req.query.msg || null;
@@ -47,8 +46,8 @@ app.get("/", async function (req, res) {
   }
 });
 
-// POST Add Task
-app.post("/", async function (req, res) {
+// ✅ POST: Add Task
+app.post("/", async (req, res) => {
   const taskName = req.body.ele1.trim();
   const priority = req.body.priority;
 
@@ -56,13 +55,13 @@ app.post("/", async function (req, res) {
     return res.redirect("/?msg=Task+title+cannot+be+empty");
   }
 
-  const newTask = new Item({ name: taskName, priority: priority });
+  const newTask = new Item({ name: taskName, priority });
   await newTask.save();
   res.redirect("/?msg=Task+added+successfully");
 });
 
-// PUT Edit Task
-app.put("/edit/:id", async function (req, res) {
+// ✅ PUT: Edit Task
+app.put("/edit/:id", async (req, res) => {
   try {
     const updatedData = {
       name: req.body.newText,
@@ -76,8 +75,8 @@ app.put("/edit/:id", async function (req, res) {
   }
 });
 
-// DELETE Task
-app.delete("/delete/:id", async function (req, res) {
+// ✅ DELETE: Remove Task
+app.delete("/delete/:id", async (req, res) => {
   try {
     await Item.findByIdAndDelete(req.params.id);
     res.redirect("/?msg=Task+deleted+successfully");
@@ -87,8 +86,8 @@ app.delete("/delete/:id", async function (req, res) {
   }
 });
 
-// TOGGLE Checkbox
-app.post("/toggle/:id", async function (req, res) {
+// ✅ POST: Toggle Checkbox
+app.post("/toggle/:id", async (req, res) => {
   try {
     const item = await Item.findById(req.params.id);
     item.done = !item.done;
@@ -100,7 +99,8 @@ app.post("/toggle/:id", async function (req, res) {
   }
 });
 
-// Start Server
-app.listen(3000, function () {
-  console.log("Server is running on port 3000");
+// ✅ Start Server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server is running on port ${PORT}`);
 });
