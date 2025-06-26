@@ -1,0 +1,109 @@
+/* Reset default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Overall body style */
+body {
+  background: #d7dae0;
+  color: #991717;
+  padding: 20px;
+}
+
+/* Header box */
+.box {
+  width: 90%;
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #ffffff66;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Main heading */
+.box h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+/* Task form */
+form {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+/* Inputs and buttons */
+input[type="text"], select {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  flex: 1;
+  min-width: 150px;
+}
+
+button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #095784;
+}
+
+/* Each task item */
+.todo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fdfdfd;
+  padding: 6px 10px;
+  margin-top: 8px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  flex-wrap: wrap;
+}
+
+/* Task text */
+.todo-item span {
+  flex-grow: 1;
+  margin-left: 10px;
+  font-size: 16px;
+}
+
+/* Form buttons */
+.todo-item form {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 5px;
+}
+
+input[type="checkbox"] {
+  transform: scale(1.2);
+}
+
+/* Footer */
+footer {
+  margin-top: 40px;
+  font-size: 14px;
+  color: #a9136d;
+}
+/* Set a taller height for the list box */
+.box:nth-of-type(2) {
+  max-height: 500px; /* You can increase this */
+  overflow-y: auto;
+}

@@ -1,0 +1,80 @@
+<%- include("partials/header") %>
+
+<!-- Alert Message -->
+<% if (message) { %>
+  <script>
+    alert("<%= message %>");
+  </script>
+<% } %>
+
+<!-- Add Task -->
+<div class="box">
+  <form action="/" method="POST" name="todoForm">
+    <input type="text" name="ele1" placeholder="Enter the task">
+
+    <!-- Priority Dropdown -->
+    <select name="priority">
+      <option value="low">Low</option>
+      <option value="medium">Medium</option>
+      <option value="urgent">Urgent</option>
+    </select>
+
+    <button type="submit">+</button>
+  </form>
+</div>
+
+<!-- Task List -->
+<div class="box">
+  <% for (let i = 0; i < ejes.length; i++) { %>
+    <div class="todo-item">
+      
+      <!-- Checkbox -->
+      <form action="/toggle/<%= ejes[i]._id %>" method="POST" style="display:inline;">
+        <input type="checkbox" onchange="this.form.submit()" <%= ejes[i].done ? 'checked' : '' %> >
+      </form>
+
+      <!-- Task Name -->
+      <span style="text-decoration: <%= ejes[i].done ? 'line-through' : 'none' %>; opacity: <%= ejes[i].done ? '0.6' : '1' %>; margin-left: 10px;">
+        <%= ejes[i].name %>
+      </span>
+
+      <!-- Priority Tag -->
+      <span style="margin-left: 10px; font-size: 14px; color: <%= ejes[i].priority === 'urgent' ? 'red' : ejes[i].priority === 'medium' ? 'orange' : 'green' %>;">
+        [<%= ejes[i].priority %>]
+      </span>
+
+      <!-- Delete -->
+      <form action="/delete/<%= ejes[i]._id %>?_method=DELETE" method="POST" style="display:inline;">
+        <button type="submit" title="Delete">🗑️</button>
+      </form>
+
+      <!-- Edit -->
+      <form action="/edit/<%= ejes[i]._id %>?_method=PUT" method="POST" style="display:inline;">
+        <input type="text" name="newText" value="<%= ejes[i].name %>" required>
+
+        <!-- Priority Dropdown -->
+        <select name="newPriority">
+          <option value="low" <%= ejes[i].priority === 'low' ? 'selected' : '' %>>Low</option>
+          <option value="medium" <%= ejes[i].priority === 'medium' ? 'selected' : '' %>>Medium</option>
+          <option value="urgent" <%= ejes[i].priority === 'urgent' ? 'selected' : '' %>>Urgent</option>
+        </select>
+
+        <button type="submit" title="Edit">✏️</button>
+      </form>
+
+    </div>
+  <% } %>
+</div>
+
+<script>
+  const form = document.forms["todoForm"];
+  const input = form["ele1"];
+  form.addEventListener("submit", function (e) {
+    if (input.value.trim() === "") {
+      e.preventDefault();
+      alert("Please enter a task before adding.");
+    }
+  });
+</script>
+
+<%- include("partials/footer") %>
