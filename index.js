@@ -14,7 +14,7 @@ const mongoose = require("mongoose");
 const mongoURI = process.env.MONGO_URL;
 console.log("Connecting to:", mongoURI); // TEMP LOG for debugging
 
-mongoose.connect(mongoURI, {
+mongoose.connect(mongoURL, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
