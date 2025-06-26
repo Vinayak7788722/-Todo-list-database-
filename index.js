@@ -9,7 +9,7 @@ app.use(express.static("public"));
 app.use(methodOverride("_method"));
 
 // MongoDB Connection
-mongoose.connect("mongodb+srv://vinayaknaik577:zOnTlJCwDV2r8Qwy@to-do-list1.kcczmms.mongodb.net/?retryWrites=true&w=majority&appName=to-do-list1")
+mongoose.connect("MONGO_URL")
 .then(() => console.log("✅ Connected to MongoDB Atlas"))
 .catch(err => console.error("❌ Connection error:", err));
 
