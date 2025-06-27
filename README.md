@@ -55,7 +55,7 @@ index.js: Main server file
 
 
 👨‍💻 Author
-Vinayak Naik
+Vinayak G Raghu
 📧 [vinayaknaik577@gmail.com]
 🔗 GitHub:https://github.com/Vinayak7788722
 
