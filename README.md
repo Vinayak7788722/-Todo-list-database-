@@ -49,7 +49,7 @@ views/: Contains EJS files for frontend rendering
 
 public/: Static files like CSS or images
 
-models/: Mongoose schema (if used)
+models/: Mongoose schema 
 
 index.js: Main server file
 
